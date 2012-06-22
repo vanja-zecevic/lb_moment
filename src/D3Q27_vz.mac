@@ -1,0 +1,64 @@
+/*Copyright (C) 2012 Vanja Zecevic
+  Contact vanja.zecevic@sydney.uni.edu.au
+
+  This file is part of lb_moment
+
+  lb_moment is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  lb_moment is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
+
+simp: true;
+load("lb_pert_functions.mac");
+
+q: 27;
+dx: 1;
+dy: 1;
+dz: 1;
+c_0: [1, 1,   1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1];
+c_x: [0, dx,-dx,  0,  0,  0,  0, dx,-dx,-dx, dx, dx,-dx,-dx, dx,  0,  0,  0,  0, dx,-dx, dx,-dx, dx,-dx,-dx, dx];
+c_y: [0, 0,   0, dy,-dy,  0,  0, dy,-dy, dy,-dy,  0,  0,  0,  0, dy,-dy,-dy, dy, dy,-dy, dy,-dy,-dy, dy, dy,-dy];
+c_z: [0, 0,   0,  0,  0, dz,-dz,  0,  0,  0,  0, dz,-dz, dz,-dz, dz,-dz, dz,-dz, dz,-dz,-dz, dz, dz,-dz, dz,-dz];
+c_sq: (c_x * c_x)/(dx*dx) + (c_y * c_y)/(dy*dy) + (c_z * c_z)/(dz*dz);
+
+M: makelist(makelist(0 , q) , q);
+
+M[1]:  c_0;
+M[2]:  c_x;
+M[3]:  c_y;
+M[4]:  c_z;
+M[5]:  3*expand(c_x * c_x);
+M[6]:  3*expand(c_y * c_y);
+M[7]:  3*expand(c_z * c_z);
+M[8]:  expand(c_x * c_y);
+M[9]:  expand(c_x * c_z);
+M[10]: expand(c_y * c_z);
+M[11]: 3*expand(c_x * c_y * c_y);
+M[12]: 3*expand(c_x * c_z * c_z);
+M[13]: 3*expand(c_y * c_x * c_x);
+M[14]: 3*expand(c_y * c_z * c_z);
+M[15]: 3*expand(c_z * c_x * c_x);
+M[16]: 3*expand(c_z * c_y * c_y);
+M[17]: expand(c_x * c_y * c_z);
+M[18]: 9*expand(c_x * c_x * c_y * c_y);
+M[19]: 9*expand(c_x * c_x * c_z * c_z);
+M[20]: 9*expand(c_y * c_y * c_z * c_z);
+M[21]: 9*expand(c_x * c_x * c_y * c_z);
+M[22]: 9*expand(c_y * c_y * c_x * c_z);
+M[23]: 9*expand(c_z * c_z * c_x * c_y);
+M[24]: 9*expand(c_x * c_x * c_y * c_y * c_z);
+M[25]: 9*expand(c_x * c_x * c_z * c_z * c_y);
+M[26]: 9*expand(c_y * c_y * c_z * c_z * c_x);
+M[27]: 27*expand(c_y * c_y * c_z * c_z * c_x * c_x);
+
+linel: 160;
+gramschmidt_vz(M, q);
+

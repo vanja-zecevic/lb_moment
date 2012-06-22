@@ -1,0 +1,44 @@
+/*Copyright (C) 2012 Vanja Zecevic
+  Contact vanja.zecevic@sydney.uni.edu.au
+
+  This file is part of lb_moment
+
+  lb_moment is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  lb_moment is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
+
+
+proj_vz(u, v):=  (v . u) / (u . u) ;
+
+gramschmidt_vz(M_in, q):= block([M_trans, M_out, iOld, iNew, iComp, proj_tmp],
+    M_trans: makelist(makelist(0 , q) , q),
+    M_out:   makelist(makelist(0 , q) , q),
+    M_out[1]: M_in[1],
+    M_trans[1][1]: 1,
+    for iNew:2 thru q step 1 do (
+        M_out[iNew]: M_in[iNew],
+        M_trans[iNew][iNew]: 1,
+        for iOld: (iNew-1) thru 1 step -1 do (
+            proj_tmp: proj_vz(M_out[iOld], M_in[iNew]),
+            M_out[iNew]: M_out[iNew] - proj_tmp * M_out[iOld],
+            for iComp: iOld thru 1 step -1 do M_trans[iNew][iComp]:
+              M_trans[iNew][iComp] - proj_tmp*M_trans[iOld][iComp]
+        ) 
+    ),
+    print("------------------------------------------------------------"),   
+    print("Components:"),
+    for iPrint:1 thru q step 1 do print(M_trans[iPrint]),
+    print("------------------------------------------------------------"),   
+    print("Matrix M:"),
+    for iPrint:1 thru q step 1 do print(M_out[iPrint])
+)$
+

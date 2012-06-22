@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Copyright (C) 2012 Vanja Zecevic
+# Contact vanja.zecevic@sydney.uni.edu.au
+
+# This file is part of lb_moment
+
+# lb_moment is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# lb_moment is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+OPTIONS="D2Q9_landl D2Q9_vz D3Q13_dh D3Q27_vz \
+  quit"
+
+cd src
+if [ -z "$1" ]; then 
+    select opt in $OPTIONS; do
+        if [ "$opt" = "quit" ]; then
+            echo Bye bye 
+            exit
+        fi
+        maxima --batch-string="batchload(\"./"$opt".mac\")$"
+        exit
+    done
+fi
+maxima --batch-string="batchload(\"./"$1".mac\")$"
+

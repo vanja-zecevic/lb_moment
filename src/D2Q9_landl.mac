@@ -1,0 +1,45 @@
+/*Copyright (C) 2012 Vanja Zecevic
+  Contact vanja.zecevic@sydney.uni.edu.au
+
+  This file is part of lb_moment
+
+  lb_moment is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  lb_moment is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
+
+simp: true;
+load("lb_pert_functions.mac");
+
+q: 9;
+dx: 1;
+dy: 1;
+c_0: [1,  1,  1,  1,  1,  1,  1,  1,  1];
+c_x: [0, dx,-dx,  0,  0, dx,-dx,-dx, dx];
+c_y: [0,  0,  0, dy,-dy, dy,-dy, dy,-dy];
+
+M: makelist(makelist(0 , q) , q);
+
+M[1]: c_0;
+M[2]: -4*c_0*dx*dx*dy*dy + 3*(c_x*c_x*dy*dy + c_y*c_y*dx*dx);
+M[3]: 4*c_0*dx*dx*dy*dy*dx*dx*dy*dy
+  - (21/2)*(c_x*c_x*dy*dy + c_y*c_y)*dx*dx*dy*dy
+  + (9/2)*(c_x*c_x*dy*dy + c_y*c_y*dx*dx)*(c_x*c_x*dy*dy + c_y*c_y*dx*dx);
+M[4]: c_x;
+M[5]: c_x*(-5*c_0*dx*dx*dy*dy + 3*(c_x*c_x*dy*dy + c_y*c_y*dx*dx));
+M[6]: c_y;
+M[7]: c_y*(-5*c_0*dx*dx*dy*dy + 3*(c_x*c_x*dy*dy + c_y*c_y*dx*dx));
+M[8]: c_x*c_x*dy*dy - c_y*c_y*dx*dx;
+M[9]: c_x*c_y;
+
+linel: 120;
+gramschmidt_vz(M, q);
+
